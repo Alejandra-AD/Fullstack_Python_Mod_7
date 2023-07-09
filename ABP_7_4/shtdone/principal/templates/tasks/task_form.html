@@ -1,0 +1,44 @@
+{% extends 'tasks/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="jumbotron fade-in">
+        <h1 class="display-4">¿Nueva Tarea? D<span class="heart">♥️</span>ne!</h1>
+        <hr class="my-4">
+        <p>Comienza a organizar tus tareas hoy mismo.</p>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="login-container">
+                    <h2>Crear Tarea</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_title">Título</label>
+                            <input type="text" id="id_title" name="title" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_description">Descripción</label>
+                            <textarea id="id_description" name="description" class="form-control" rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_due_date">Fecha límite</label>
+                            <input type="date" id="id_due_date" name="due_date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_etiquetas">Etiquetas</label>
+                            <br>
+                            {% for etiqueta in form.etiquetas %}
+                                <div class="form-check form-check-inline">
+                                    {{ etiqueta }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <input type="submit" value="Crear Tarea" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

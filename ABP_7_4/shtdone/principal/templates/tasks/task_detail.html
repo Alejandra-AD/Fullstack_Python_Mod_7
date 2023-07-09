@@ -1,0 +1,31 @@
+{% extends 'tasks/base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 my-5">
+        <h2>Detalle de esta tarea:</h2>
+      </div>
+    </div>
+    <ul class="task-list">
+      <li class="task-item fade-in">
+        <div class="task-details">
+          <h4>{{ task.title }}</h4>
+          <span class="emoji">&#128512;</span>
+          <div class=" md-12 mx-5 text-right">
+            <a href="#" class="btn btn-outline-dark">Editar</a>
+            <a href="#" class="btn btn-outline-dark">Eliminar</a>
+            <a href="#" class="btn btn-outline-dark">Completar</a>
+            <a href="#" class="btn btn-outline-dark">Retornar</a>
+        </div>
+        </div>
+        <div>
+          <p><strong>Descripción:</strong> {{ task.description }}</p>
+          <p><strong>Fecha:</strong> {{ task.due_date }}</p>
+          <p><strong>Estado:</strong> <span class="status {{ task.status }}"></span> {{ task.get_status_display }}</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+{% endblock %}

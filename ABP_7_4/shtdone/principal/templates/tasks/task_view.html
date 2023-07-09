@@ -1,0 +1,11 @@
+{% extends 'task/base.html' %}
+{% load static %}
+
+{% block content %}
+  <h2>{{ task.title }}</h2>
+  <p><strong>Descripción:</strong> {{ task.description }}</p>
+  <p><strong>Estado:</strong> {{ task.get_status_display }}</p>
+  <p><strong>Fecha de vencimiento:</strong> {{ task.due_date }}</p>
+
+  <a href="#">Editar</a> | <a href="#">Eliminar</a> | <a href="{% url 'task_list' %}">Retornar</a>
+{% endblock %}
