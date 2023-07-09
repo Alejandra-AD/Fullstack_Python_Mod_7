@@ -26,7 +26,6 @@
                 <li class="nav-item">
                   <a class="nav-link" href="#">Tareas</a>
                 </li>
-            
                 <li class="nav-item">
                   {% if user.is_authenticated %}
                       <a href="{% url 'logout' %}" class="nav-link"><i class="ri-logout-box-line"></i>Cerrar Sesión</a>
