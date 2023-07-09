@@ -16,18 +16,18 @@
         <div class="row">
             
         </div>
-        <div class="col-md-12 my-4">
+        <div class="col-md-8 my-4">
           <form method="GET" action="{% url 'task_list' %}">
               <div class="form-row align-items-center">
                   <div class="col-md-4">
                       <label for="id_name">Nombre</label>
                       <input type="text" id="id_name" name="name" class="form-control">
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-4">
                       <label for="id_due_date">Fecha límite</label>
                       <input type="date" id="id_due_date" name="due_date" class="form-control">
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-3">
                       <label for="id_etiquetas">Etiquetas</label>
                       <select name="etiqueta" id="id_etiquetas" class="form-control">
                           <option value="">Todas</option>
@@ -36,15 +36,6 @@
                           {% endfor %}
                       </select>
                   </div>
-                  <div class="col-md-2">
-                    <label for="id_priority">Prioridad</label>
-                    <select name="priority" id="id_priority" class="form-control">
-                        <option value="">Todas</option>
-                        {% for priority in priority %}
-                            <option value="{{ priority.id }}">{{ priority.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
                   <div class="col-md-1 mt-4">
                       <button type="submit" class="btn btn-dark">Filtrar</button>
                   </div>
@@ -65,17 +56,6 @@
                           <p><strong>Descripción:</strong> {{ task.description }}</p>
                           <p><strong>Fecha:</strong> {{ task.due_date }}</p>
                           <p><strong>Etiqueta:</strong> {{ task.etiqueta.nombre }}</p>
-                          <p><strong>Prioridad:</strong>
-                            {% if task.priority.name == 'Alta' %}
-                            <button class="btn btn-danger btn-sm">{{ task.priority.name }}</button>
-                            {% elif task.priority.name == 'Media' %}
-                            <button class="btn btn-info btn-sm">{{ task.priority.name }}</button>
-                            {% elif task.priority.name == 'Baja' %}
-                            <button class="btn btn-warning btn-sm">{{ task.priority.name }}</button>
-                            {% else %}
-                            {{ task.priority.name }}
-                            {% endif %}
-                        </p>
                       </div>
                       <div class="task-actions">
                         <a href="{% url 'task_detail' task.id %}" class="btn btn-outline-dark">Ver</a>

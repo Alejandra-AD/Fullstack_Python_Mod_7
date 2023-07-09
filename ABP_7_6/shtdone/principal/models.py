@@ -2,11 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-class Priority(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
 
 class TaskStatus(models.Model):
     name = models.CharField(max_length=50)
@@ -32,11 +27,11 @@ class Task(models.Model):
     completed = models.BooleanField(default=False)
     due_date = models.DateField()
 
+    # Relaciones con otros modelos
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.ForeignKey(TaskStatus, on_delete=models.SET_NULL, null=True)
     etiqueta = models.ForeignKey(Etiqueta, on_delete=models.CASCADE)
-    priority = models.ForeignKey(Priority, on_delete=models.SET_NULL, null=True)
-    
+
     def __str__(self):
         return self.title
 

@@ -14,7 +14,7 @@
           <h4>{{ task.title }}</h4>
           {% if task.completed %}
           <span class="badge badge-success">Completada</span>
-         {% endif %}
+        {% endif %}
           <span class="emoji">&#128512;</span>
           <div class=" md-12 mx-5 text-right">
             <a href="{% url 'task_edit' pk=task.pk %}" class="btn btn-outline-dark">Editar</a>
@@ -27,18 +27,6 @@
           <p><strong>Descripción:</strong> {{ task.description }}</p>
           <p><strong>Fecha:</strong> {{ task.due_date }}</p>
           <p><strong>Etiqueta:</strong> {{ task.etiqueta.nombre }}</p>
-          <p><strong>Prioridad:</strong>
-            {% if task.priority.name == 'Alta' %}
-            <button class="btn btn-danger btn-sm">{{ task.priority.name }}</button>
-            {% elif task.priority.name == 'Media' %}
-            <button class="btn btn-info btn-sm">{{ task.priority.name }}</button>
-            {% elif task.priority.name == 'Baja' %}
-            <button class="btn btn-warning btn-sm">{{ task.priority.name }}</button>
-            {% else %}
-            {{ task.priority.name }}
-            {% endif %}
-        </p>
-
           <div class="task-actions">
             <a href="{% url 'observation_create' task_id=task.pk %}" class="btn btn-outline-dark">Agregar Observación</a>
           </div>

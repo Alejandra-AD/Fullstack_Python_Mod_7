@@ -1,10 +1,8 @@
 
-from collections import UserDict
 from msilib.schema import ListView
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
 from django.contrib import messages
 from django.views.generic import DetailView,CreateView,TemplateView,DeleteView,View
 from django.views.generic.edit import UpdateView
@@ -12,7 +10,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.urls import reverse_lazy
 from .forms import LoginForm, TaskFilterForm,TaskForm
-from .models import Task,Etiqueta,Observation,TaskStatus,Priority
+from .models import Task,Etiqueta,Observation,TaskStatus
 
 # Create your views here.
 def home(request):
@@ -52,7 +50,6 @@ class TaskListView(LoginRequiredMixin, TemplateView):
             name = filter_form.cleaned_data.get('name')
             due_date = filter_form.cleaned_data.get('due_date')
             etiquetas = filter_form.cleaned_data.get('etiqueta')
-            priority = filter_form.cleaned_data.get('priority')
 
             if name:
                 tasks = tasks.filter(title__icontains=name)
@@ -63,14 +60,9 @@ class TaskListView(LoginRequiredMixin, TemplateView):
             if etiquetas:
                 tasks = tasks.filter(etiqueta=etiquetas)
 
-            if priority:
-                tasks = tasks.filter(priority=priority)
-
         context['tasks'] = tasks
         context['filter_form'] = filter_form
         context['etiqueta'] = Etiqueta.objects.all()
-        context['priority'] = Priority.objects.all()
-
         return context
 
 
@@ -104,7 +96,7 @@ class TaskDetailView(DetailView):
     context_object_name = 'task'
 
     def post(self, request, *args, **kwargs):
-        task = self.get_object()  #  instancia la tarea
+        task = self.get_object()  # Obtén la instancia de la tarea
         task.completed = True  # Marca la tarea como completada
         task.status = TaskStatus.objects.get(name='Completada')  # Establece el estado de la tarea como 'Completada'
         task.save()  # Guarda los cambios en la base de datos
@@ -119,7 +111,6 @@ class TaskDetailView(DetailView):
         context['delete_url'] = reverse_lazy('task_delete', kwargs={'pk': task.pk})
         context['complete_url'] = reverse_lazy('task_complete', kwargs={'pk': task.pk})
         context['status'] = TaskStatus.objects.get(name='Completada')
-        context['priority'] = task.priority  # Agregar la prioridad al contexto
         context['return_url'] = reverse_lazy('task_list')
         context['observations'] = Observation.objects.filter(task=task)
         return context
@@ -132,33 +123,18 @@ class TaskCreateView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = TaskForm()
-        context['users'] = User.objects.all()  # Obtener la lista de usuarios
+        # context['edit_url'] = reverse_lazy('task_edit', kwargs={'pk': self.object.pk})
         return context
 
     def post(self, request, *args, **kwargs):
         form = TaskForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
-            task.user = form.cleaned_data['user']  # Asignar el usuario seleccionado
+            task.user = request.user
             task.save()
             return redirect('task_list')
         else:
             return render(request, self.template_name, {'form': form})
-
-# class TaskEditView(UpdateView):
-#     model = Task
-#     form_class = TaskForm
-#     template_name = 'tasks/task_form.html'
-#     pk_url_kwarg = 'pk'
-
-#     def get_success_url(self):
-#         return reverse_lazy('task_detail', kwargs={'pk': self.object.pk})
-    
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['priorities'] = Priority.objects.all()  # Obtener la lista de prioridades
-#         context['users'] = User.objects.all()
-#         return context
 
 class TaskEditView(UpdateView):
     model = Task
@@ -168,27 +144,6 @@ class TaskEditView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('task_detail', kwargs={'pk': self.object.pk})
-    
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        task = self.get_object()
-        kwargs['initial'] = {
-            'title': task.title,
-            'description': task.description,
-            'due_date': task.due_date,
-            'etiqueta': task.etiqueta,
-            'priority': task.priority,
-            'user': task.user,
-        }
-        return kwargs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['priorities'] = Priority.objects.all()  # Obtener la lista de prioridades
-        context['users'] = User.objects.all()
-        return context
-
-
 
 class ObservationCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'tasks/observation_form.html'

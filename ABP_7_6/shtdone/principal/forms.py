@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Etiqueta,Task,Priority,User
+from .models import Etiqueta, Task
 
 
 class LoginForm(forms.Form):
@@ -34,18 +34,11 @@ class TaskFilterForm(forms.Form):
     name = forms.CharField(required=False)
     due_date = forms.DateField(required=False)
     etiqueta = forms.ModelChoiceField(queryset=Etiqueta.objects.all(), required=False, widget=forms.Select)
-    priority = forms.ModelChoiceField(queryset=Priority.objects.all(), required=False, widget=forms.Select)
     
 class TaskForm(forms.ModelForm):
-    etiqueta = forms.ModelChoiceField(queryset=Etiqueta.objects.all(), empty_label=None)
-    priority = forms.ModelChoiceField(queryset=Priority.objects.all(), empty_label=None)
-    user = forms.ModelChoiceField(queryset=User.objects.all(), label='Usuario')
+    etiqueta = forms.ModelChoiceField(queryset=Etiqueta.objects.all(), required=False, widget=forms.Select)
 
     class Meta:
         model = Task
-        fields = ['title', 'description', 'due_date', 'etiqueta', 'priority', 'user']
-        
-    def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.fields['title'].widget.attrs['placeholder'] = 'Ingrese el título de la tarea'
-            self.fields['description'].widget.attrs['placeholder'] = 'Ingrese la descripción de la tarea'
+        fields = ['title', 'description', 'due_date', 'etiqueta']
+
