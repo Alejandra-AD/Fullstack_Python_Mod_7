@@ -79,12 +79,12 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
-     'default': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'task_db',
+        'NAME': 'task_db_pawo',
         'USER': 'chopper',
-        'PASSWORD': 'martini123',
-        'HOST': 'localhost',
+        'PASSWORD': 'vdUda9Wzr5NMQ0i5s64xFGMPig9vW7My',
+        'HOST': 'dpg-cilin55ph6eg6k9n94r0-a.oregon-postgres.render.com',
         'PORT': '5432',
         }
 }
