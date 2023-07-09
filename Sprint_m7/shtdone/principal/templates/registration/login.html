@@ -1,0 +1,21 @@
+{% extends 'tasks/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="jumbotron fade-in">
+        <h1 class="display-4">¡Bienvenido a Sh<span class="heart">♥️</span>t Done!</h1>
+        <p class="lead">Una herramienta para administrar tus tareas de manera eficiente.</p>
+        <hr class="my-4">
+        <p>Comienza a organizar tus tareas hoy mismo.</p>
+        <div class="login-container">
+            <h2>Iniciar sesión</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Iniciar sesión">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

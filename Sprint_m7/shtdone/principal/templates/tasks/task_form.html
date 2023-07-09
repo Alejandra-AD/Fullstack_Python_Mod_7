@@ -1,0 +1,69 @@
+{% extends 'tasks/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="jumbotron fade-in">
+        <h1 class="display-4">¡ Ordena tus planes y plazos de entrega 😊!</h1>
+        <hr class="my-2">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="col-md-12">
+                    <h2>Todas tus tareas organizadas en un solo lugar</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group my-5">
+                            <label for="id_title">Título</label>
+                            {% if form.title.value %}
+                                <input type="text" id="id_title" name="title" class="form-control" value="{{ form.title.value }}">
+                            {% else %}
+                                <input type="text" id="id_title" name="title" class="form-control" placeholder="Ingrese el título de la tarea">
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_description">Descripción</label>
+                            {% if form.description.value %}
+                                <textarea id="id_description" name="description" class="form-control" rows="4">{{ form.description.value }}</textarea>
+                            {% else %}
+                                <textarea id="id_description" name="description" class="form-control" rows="4" placeholder="Ingrese la descripción de la tarea"></textarea>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_due_date">Fecha límite</label>
+                            <input type="date" id="id_due_date" name="due_date" class="form-control" value="{{ form.due_date.value }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_user">Asignar a Usuario</label>
+                            <select id="id_user" name="user" class="form-control">
+                                {% for user in users %}
+                                    <option value="{{ user.id }}" {% if form.user.value == user.id %}selected{% endif %}>{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_etiquetas">Etiquetas</label>
+                            <select name="etiqueta" id="id_etiquetas" class="form-control">
+                                {% for etiqueta in form.etiqueta.field.queryset %}
+                                    <option value="{{ etiqueta.id }}" {% if form.etiqueta.value == etiqueta.id %}selected{% endif %}>{{ etiqueta.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_priority">Prioridad</label>
+                            <select id="id_priority" name="priority" class="form-control">
+                                {% for priority in form.priority.field.queryset %}
+                                    <option value="{{ priority.id }}" {% if form.priority.value == priority.id %}selected{% endif %}>{{ priority.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <input type="submit" value="Guardar" class="btn btn-primary">
+                        {% if edit_url %}
+                            <a href="{{ edit_url }}">Editar</a>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
